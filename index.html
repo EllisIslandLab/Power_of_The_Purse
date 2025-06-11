@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power of The Purse - Personal Finance with Matt Ellis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">Power of The Purse</div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#reviews" class="nav-link">Reviews</a>
+                <a href="#booking" class="nav-link">Book Consultation</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Power of The Purse<br>
+                <span class="subtitle">Personal Finance with Matt Ellis</span>
+            </h1>
+            
+            <div class="youtube-section">
+                <a href="https://www.youtube.com/@Power_Of_The_Purse" target="_blank" class="youtube-btn">
+                    <i class="fab fa-youtube"></i>
+                    Visit My YouTube Channel
+                </a>
+            </div>
+
+            <div class="coaching-overview">
+                <h2>Transform Your Financial Future</h2>
+                <p>Financial coaching is about empowering you with the knowledge, tools, and accountability to take control of your money and build lasting wealth. Here's what we'll accomplish together:</p>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">💰</div>
+                        <h3>Calculate Your Net Worth</h3>
+                        <p>Get a clear picture of your current financial position</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📈</div>
+                        <h3>Track Your Progress</h3>
+                        <p>Monitor your financial history and future growth potential</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📊</div>
+                        <h3>Build Custom Budgets</h3>
+                        <p>Create multiple budgets tailored to your personal goals</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🛠️</div>
+                        <h3>Exclusive Tools</h3>
+                        <p>Access free tools available only to my clients</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🎯</div>
+                        <h3>Personal Accountability</h3>
+                        <p>Get encouragement and support for your success</p>
+                    </div>
+                </div>
+
+                <div class="consultation-prep">
+                    <h3>What to Bring to Your Free Consultation:</h3>
+                    <ul>
+                        <li>Recent bank statements</li>
+                        <li>List of current debts and monthly payments</li>
+                        <li>Your financial goals and concerns</li>
+                        <li>Any questions about your financial future</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section">
+        <div class="container">
+            <h2>Client Reviews</h2>
+            <div class="reviews-container" id="reviews-container">
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Tell me how I did as your personal finance coach!"</p>
+                    <div class="reviewer">- Future Client</div>
+                </div>
+            </div>
+            
+            <button class="review-btn" id="leave-review-btn">Leave a Review</button>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking-section">
+        <div class="container">
+            <div class="booking-content">
+                <h2 class="booking-title">Ready to take control of your finances?</h2>
+                <p class="booking-subtitle">Book a free consultation today and start your journey to financial freedom</p>
+                <button class="book-btn" id="book-consultation">Book Free Consultation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p><i class="fas fa-envelope"></i> MattJEllis1@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> (440) 527-4500</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>How to Book</h3>
+                    <p>Click "Book Free Consultation" above, select your preferred date and time, and fill out your contact information. I'll reach out to confirm your appointment!</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Follow Me</h3>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@Power_Of_The_Purse" target="_blank">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Power of The Purse - Matt Ellis. All rights reserved.</p>
+                <button class="back-to-top" id="back-to-top">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Review Modal -->
+    <div class="modal" id="review-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Leave a Review</h3>
+            <form id="review-form">
+                <div class="star-rating" id="star-rating">
+                    <i class="fas fa-star star" data-rating="1"></i>
+                    <i class="fas fa-star star" data-rating="2"></i>
+                    <i class="fas fa-star star" data-rating="3"></i>
+                    <i class="fas fa-star star" data-rating="4"></i>
+                    <i class="fas fa-star star" data-rating="5"></i>
+                </div>
+                <textarea id="review-text" placeholder="Share your experience..." required></textarea>
+                <input type="text" id="reviewer-name" placeholder="Your name" required>
+                <button type="submit">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="booking-modal">
+        <div class="modal-content booking-modal-content">
+            <span class="close">&times;</span>
+            <h3>Book Your Free Consultation</h3>
+            
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="nav-btn" id="prev-month">&lt;</button>
+                    <h4 id="current-month"></h4>
+                    <button class="nav-btn" id="next-month">&gt;</button>
+                </div>
+                
+                <div class="calendar-grid" id="calendar-grid"></div>
+                
+                <div class="time-slots" id="time-slots" style="display: none;">
+                    <h4>Available Times</h4>
+                    <div class="time-grid" id="time-grid"></div>
+                </div>
+                
+                <div class="booking-form" id="booking-form" style="display: none;">
+                    <h4>Your Information</h4>
+                    <form id="consultation-form">
+                        <input type="text" id="first-name" placeholder="First Name" required>
+                        <input type="text" id="last-name" placeholder="Last Name" required>
+                        <input type="tel" id="phone" placeholder="Phone Number" required>
+                        <input type="email" id="email" placeholder="Email Address" required>
+                        <button type="submit">Book Consultation</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
