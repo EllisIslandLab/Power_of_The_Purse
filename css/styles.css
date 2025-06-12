@@ -436,6 +436,7 @@ body {
 
 .booking-modal-content {
     max-width: 600px;
+    margin: 0% auto;
 }
 
 .close {
