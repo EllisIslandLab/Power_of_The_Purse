@@ -425,7 +425,7 @@ body {
 
 .modal-content {
     background-color: white;
-    margin: 10% auto;
+    margin: 0% auto;
     padding: 2rem;
     border-radius: 20px;
     width: 90%;
