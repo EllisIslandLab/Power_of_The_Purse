@@ -236,6 +236,25 @@ body {
     font-weight: bold;
 }
 
+.consultation-prep-optional ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.consultation-prep-optional li {
+    padding: 0.5rem 0;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.consultation-prep-optional li::before {
+    content: ".";
+    position: absolute;
+    left: 0;
+    color: var(--huntington-gold);
+    font-weight: bold;
+}
+
 /* Reviews Section */
 .reviews-section {
     padding: 5rem 0;
@@ -425,18 +444,15 @@ body {
 
 .modal-content {
     background-color: white;
-    margin: 0% auto;
+    margin: 2% auto;
     padding: 2rem;
     border-radius: 20px;
     width: 90%;
     max-width: 500px;
     position: relative;
     animation: slideIn 0.3s ease-out;
-}
-
-.booking-modal-content {
-    max-width: 600px;
-    margin: 0% auto;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close {
@@ -518,13 +534,12 @@ body {
     box-shadow: var(--shadow-hover);
 }
 
-/* Calendar Container - Added positioning and spacing fixes */
+/* Calendar Container */
 .calendar-container {
     max-width: 100%;
     margin: 1rem auto;
     padding: 1rem;
     box-sizing: border-box;
-    /* Ensure calendar doesn't get pushed down */
     position: relative;
     top: 0;
 }
@@ -534,7 +549,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem; /* Reduced from 2rem */
+    margin-bottom: 1.5rem;
     padding: 0 0.5rem;
 }
 
@@ -548,7 +563,6 @@ body {
     cursor: pointer;
     font-size: 1.2rem;
     transition: all 0.3s ease;
-    /* Ensure buttons stay clickable */
     z-index: 10;
     position: relative;
 }
@@ -569,8 +583,7 @@ body {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 0.5rem;
-    margin-bottom: 1.5rem; /* Reduced from 2rem */
-    /* Ensure grid stays within viewport */
+    margin-bottom: 1.5rem;
     max-width: 100%;
     overflow: visible;
 }
@@ -585,7 +598,6 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
-    /* Ensure clickable area */
     min-height: 40px;
     position: relative;
     z-index: 5;
@@ -614,11 +626,16 @@ body {
 .day-header {
     font-weight: 700;
     color: var(--huntington-green);
-    padding: 0.75rem; /* Reduced from 1rem */
+    padding: 0.75rem;
     text-align: center;
-    background: var(--light-gray, #f8f9fa);
+    background: var(--light-gray);
     border-radius: 8px;
     margin-bottom: 0.5rem;
+}
+
+/* Time Selection */
+.time-slots {
+    margin: 2rem 0;
 }
 
 .time-grid {
@@ -626,7 +643,6 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 1rem;
     margin: 1rem 0;
-    /* Ensure time slots are accessible */
     padding-bottom: 2rem;
 }
 
@@ -638,7 +654,6 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
-    /* Ensure minimum clickable size */
     min-height: 48px;
     position: relative;
     z-index: 5;
@@ -655,53 +670,52 @@ body {
     border-color: var(--huntington-green);
 }
 
-/* Mobile responsiveness - prevent calendar from being cut off */
-@media (max-width: 768px) {
-    .calendar-container {
-        margin: 0.5rem;
-        padding: 0.5rem;
-    }
-    
-    .calendar-grid {
-        gap: 0.25rem;
-        margin-bottom: 1rem;
-    }
-    
-    .calendar-day {
-        min-height: 35px;
-        font-size: 0.9rem;
-    }
-    
-    .time-grid {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 0.5rem;
-        padding-bottom: 3rem; /* Extra space on mobile */
-    }
-    
-    .time-slot {
-        padding: 0.75rem;
-        min-height: 44px;
-    }
+/* Modal Actions */
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
 }
 
-/* Ensure calendar doesn't overflow viewport */
-@media (max-height: 600px) {
-    .calendar-header {
-        margin-bottom: 1rem;
-    }
-    
-    .calendar-grid {
-        margin-bottom: 1rem;
-    }
-    
-    .day-header {
-        padding: 0.5rem;
-    }
-    
-    .time-grid {
-        padding-bottom: 1rem;
-    }
+.secondary-btn {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 2px solid var(--huntington-green);
+    border-radius: 25px;
+    color: var(--huntington-green);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
+
+.secondary-btn:hover {
+    background: var(--huntington-green);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Selected Date Display */
+#selected-date-display {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--huntington-green);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+#booking-summary {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--huntington-green);
+    font-weight: 600;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--light-gray);
+    border-radius: 10px;
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
@@ -778,8 +792,25 @@ body {
         gap: 0.25rem;
     }
 
+    .calendar-container {
+        margin: 0.5rem;
+        padding: 0.5rem;
+    }
+    
+    .calendar-day {
+        min-height: 35px;
+        font-size: 0.9rem;
+    }
+    
     .time-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.5rem;
+        padding-bottom: 3rem;
+    }
+    
+    .time-slot {
+        padding: 0.75rem;
+        min-height: 44px;
     }
 
     .footer-bottom {
@@ -791,5 +822,28 @@ body {
         transform: none;
         margin: 1rem auto 0;
         display: block;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+}
+
+/* Ensure calendar doesn't overflow viewport */
+@media (max-height: 600px) {
+    .calendar-header {
+        margin-bottom: 1rem;
+    }
+    
+    .calendar-grid {
+        margin-bottom: 1rem;
+    }
+    
+    .day-header {
+        padding: 0.5rem;
+    }
+    
+    .time-grid {
+        padding-bottom: 1rem;
     }
 }
