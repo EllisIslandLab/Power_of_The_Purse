@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Power of The Purse - Personal Finance with Matt Ellis</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css\styles_css.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -78,10 +78,17 @@
                 <div class="consultation-prep">
                     <h3>What to Bring to Your Free Consultation:</h3>
                     <ul>
-                        <li>Recent bank statements</li>
+                        <li>3-12 Most recent monthly bank statements</li>
                         <li>List of current debts and monthly payments</li>
+                        <li>Credit card statements</li>
+                        <li>List of investments (401k, stocks, ETFs)</li>
                         <li>Your financial goals and concerns</li>
                         <li>Any questions about your financial future</li>
+                    </ul>
+                    <ul class="consultation-prep-optional">
+                        <li>Optional: Most Recent Paystub(s) for each occupation</li>
+                        <li>Optional: Budget sheet</li>
+                        <li>Optional: Estimated value of house(s) and car(s)</li>
                     </ul>
                 </div>
             </div>
@@ -175,11 +182,11 @@
         </div>
     </div>
 
-    <!-- Booking Modal -->
-    <div class="modal" id="booking-modal">
-        <div class="modal-content booking-modal-content">
+    <!-- Calendar Selection Modal -->
+    <div class="modal" id="calendar-modal">
+        <div class="modal-content">
             <span class="close">&times;</span>
-            <h3>Book Your Free Consultation</h3>
+            <h3>Select a Date</h3>
             
             <div class="calendar-container">
                 <div class="calendar-header">
@@ -189,26 +196,48 @@
                 </div>
                 
                 <div class="calendar-grid" id="calendar-grid"></div>
-                
-                <div class="time-slots" id="time-slots" style="display: none;">
-                    <h4>Available Times</h4>
-                    <div class="time-grid" id="time-grid"></div>
-                </div>
-                
-                <div class="booking-form" id="booking-form" style="display: none;">
-                    <h4>Your Information</h4>
-                    <form id="consultation-form">
-                        <input type="text" id="first-name" placeholder="First Name" required>
-                        <input type="text" id="last-name" placeholder="Last Name" required>
-                        <input type="tel" id="phone" placeholder="Phone Number" required>
-                        <input type="email" id="email" placeholder="Email Address" required>
-                        <button type="submit">Book Consultation</button>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <!-- Time Selection Modal -->
+    <div class="modal" id="time-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Select a Time</h3>
+            <p id="selected-date-display"></p>
+            
+            <div class="time-slots">
+                <div class="time-grid" id="time-grid"></div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="secondary-btn" id="back-to-calendar">Back to Calendar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Information Modal -->
+    <div class="modal" id="info-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Your Information</h3>
+            <p id="booking-summary"></p>
+            
+            <form id="consultation-form">
+                <input type="text" id="first-name" placeholder="First Name" required>
+                <input type="text" id="last-name" placeholder="Last Name" required>
+                <input type="tel" id="phone" placeholder="e.g. 1238675309" required>
+                <input type="email" id="email" placeholder="jonsmith@gmail.com" required>
+                <button type="submit">Book Consultation</button>
+            </form>
+            
+            <div class="modal-actions">
+                <button class="secondary-btn" id="back-to-time">Back to Time Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js\script_js.js"></script>
 </body>
 </html>
