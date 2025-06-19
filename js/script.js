@@ -205,40 +205,82 @@ function generateStars(rating) {
 // Booking Setup
 function setupBooking() {
     const bookBtn = document.getElementById('book-consultation');
-    const bookingModal = document.getElementById('booking-modal');
-    const closeBtn = bookingModal.querySelector('.close');
+    const calendarModal = document.getElementById('calendar-modal');
+    const timeModal = document.getElementById('time-modal');
+    const infoModal = document.getElementById('info-modal');
+    
+    // Setup calendar modal
+    const calendarCloseBtn = calendarModal.querySelector('.close');
+    const prevMonthBtn = document.getElementById('prev-month');
+    const nextMonthBtn = document.getElementById('next-month');
+    
+    // Setup time modal
+    const timeCloseBtn = timeModal.querySelector('.close');
+    const backToCalendarBtn = document.getElementById('back-to-calendar');
+    
+    // Setup info modal
+    const infoCloseBtn = infoModal.querySelector('.close');
+    const backToTimeBtn = document.getElementById('back-to-time');
     const consultationForm = document.getElementById('consultation-form');
     
-    // Open booking modal
+    // Open calendar modal
     bookBtn.addEventListener('click', function() {
-        bookingModal.style.display = 'block';
+        calendarModal.style.display = 'block';
         document.body.style.overflow = 'hidden';
         generateCalendar();
     });
     
-    // Close booking modal
-    closeBtn.addEventListener('click', function() {
-        closeModal(bookingModal);
-        resetBookingForm();
+    // Calendar modal event listeners
+    calendarCloseBtn.addEventListener('click', function() {
+        closeModal(calendarModal);
     });
     
-    // Close modal when clicking outside
-    bookingModal.addEventListener('click', function(e) {
-        if (e.target === bookingModal) {
-            closeModal(bookingModal);
-            resetBookingForm();
+    calendarModal.addEventListener('click', function(e) {
+        if (e.target === calendarModal) {
+            closeModal(calendarModal);
         }
     });
     
-    // Calendar navigation
-    document.getElementById('prev-month').addEventListener('click', function() {
+    prevMonthBtn.addEventListener('click', function() {
         currentDate.setMonth(currentDate.getMonth() - 1);
         generateCalendar();
     });
     
-    document.getElementById('next-month').addEventListener('click', function() {
+    nextMonthBtn.addEventListener('click', function() {
         currentDate.setMonth(currentDate.getMonth() + 1);
         generateCalendar();
+    });
+    
+    // Time modal event listeners
+    timeCloseBtn.addEventListener('click', function() {
+        closeModal(timeModal);
+    });
+    
+    timeModal.addEventListener('click', function(e) {
+        if (e.target === timeModal) {
+            closeModal(timeModal);
+        }
+    });
+    
+    backToCalendarBtn.addEventListener('click', function() {
+        timeModal.style.display = 'none';
+        calendarModal.style.display = 'block';
+    });
+    
+    // Info modal event listeners
+    infoCloseBtn.addEventListener('click', function() {
+        closeModal(infoModal);
+    });
+    
+    infoModal.addEventListener('click', function(e) {
+        if (e.target === infoModal) {
+            closeModal(infoModal);
+        }
+    });
+    
+    backToTimeBtn.addEventListener('click', function() {
+        infoModal.style.display = 'none';
+        timeModal.style.display = 'block';
     });
     
     // Consultation form submission
@@ -249,23 +291,27 @@ function setupBooking() {
 }
 
 function generateCalendar() {
+    const calendarGrid = document.getElementById('calendar-grid');
+    const currentMonthDisplay = document.getElementById('current-month');
+    
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     
-    // Update month display
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
-    document.getElementById('current-month').textContent = `${monthNames[month]} ${year}`;
+    // Display current month and year
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    currentMonthDisplay.textContent = `${monthNames[month]} ${year}`;
     
-    // Generate calendar grid
-    const calendarGrid = document.getElementById('calendar-grid');
+    // Clear previous calendar
     calendarGrid.innerHTML = '';
     
     // Add day headers
     const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     dayHeaders.forEach(day => {
         const dayHeader = document.createElement('div');
-        dayHeader.className = 'day-header';
+        dayHeader.classList.add('day-header');
         dayHeader.textContent = day;
         calendarGrid.appendChild(dayHeader);
     });
@@ -275,27 +321,30 @@ function generateCalendar() {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const today = new Date();
     
-    // Add empty cells for days before month starts
+    // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDay; i++) {
         const emptyDay = document.createElement('div');
-        emptyDay.className = 'calendar-day other-month';
+        emptyDay.classList.add('calendar-day', 'other-month');
         calendarGrid.appendChild(emptyDay);
     }
     
     // Add days of the month
     for (let day = 1; day <= daysInMonth; day++) {
         const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day';
+        dayElement.classList.add('calendar-day');
         dayElement.textContent = day;
         
-        const dayDate = new Date(year, month, day);
+        const currentDateCheck = new Date(year, month, day);
         
         // Disable past dates
-        if (dayDate < today.setHours(0, 0, 0, 0)) {
+        if (currentDateCheck < today.setHours(0, 0, 0, 0)) {
             dayElement.classList.add('disabled');
         } else {
+            // Make future dates clickable
             dayElement.addEventListener('click', function() {
-                selectDate(year, month, day);
+                if (!dayElement.classList.contains('disabled')) {
+                    selectDate(year, month, day);
+                }
             });
         }
         
@@ -304,159 +353,270 @@ function generateCalendar() {
 }
 
 function selectDate(year, month, day) {
-    // Remove previous selection
-    document.querySelectorAll('.calendar-day.selected').forEach(el => {
-        el.classList.remove('selected');
-    });
-    
-    // Select new date
-    event.target.classList.add('selected');
     selectedDate = new Date(year, month, day);
     
-    // Show time slots
+    // Update visual selection
+    document.querySelectorAll('.calendar-day').forEach(dayEl => {
+        dayEl.classList.remove('selected');
+    });
+    event.target.classList.add('selected');
+    
+    // Close calendar modal and open time modal
+    document.getElementById('calendar-modal').style.display = 'none';
+    document.getElementById('time-modal').style.display = 'block';
+    
+    // Update selected date display
+    document.getElementById('selected-date-display').textContent = 
+        selectedDate.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+    
     generateTimeSlots();
 }
 
 function generateTimeSlots() {
-    const timeSlotsSection = document.getElementById('time-slots');
     const timeGrid = document.getElementById('time-grid');
-    
-    timeSlotsSection.style.display = 'block';
     timeGrid.innerHTML = '';
     
-    // Generate time slots from 6 AM to 9 PM
-    for (let hour = 6; hour <= 21; hour++) {
+    // Available time slots (you can customize these)
+    const timeSlots = [
+        '9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', 
+        '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'
+    ];
+    
+    timeSlots.forEach(time => {
         const timeSlot = document.createElement('div');
-        timeSlot.className = 'time-slot';
+        timeSlot.classList.add('time-slot');
+        timeSlot.textContent = time;
         
-        const time12 = hour > 12 ? `${hour - 12}:00 PM` : 
-                     hour === 12 ? '12:00 PM' : `${hour}:00 AM`;
-        
-        timeSlot.textContent = time12;
         timeSlot.addEventListener('click', function() {
-            selectTime(hour, time12);
+            selectTime(time);
         });
         
         timeGrid.appendChild(timeSlot);
-    }
-}
-
-function selectTime(hour, timeString) {
-    // Remove previous selection
-    document.querySelectorAll('.time-slot.selected').forEach(el => {
-        el.classList.remove('selected');
     });
-    
-    // Select new time
-    event.target.classList.add('selected');
-    selectedTime = { hour, string: timeString };
-    
-    // Show booking form
-    document.getElementById('booking-form').style.display = 'block';
 }
 
-function submitConsultation() {
+function selectTime(time) {
+    selectedTime = time;
+    
+    // Update visual selection
+    document.querySelectorAll('.time-slot').forEach(slot => {
+        slot.classList.remove('selected');
+    });
+    event.target.classList.add('selected');
+    
+    // Close time modal and open info modal
+    document.getElementById('time-modal').style.display = 'none';
+    document.getElementById('info-modal').style.display = 'block';
+    
+    // Update booking summary
+    document.getElementById('booking-summary').textContent = 
+        `${selectedDate.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric' 
+        })} at ${selectedTime}`;
+}
+
+// FIXED BOOKING FUNCTIONS - Replace your submitConsultation function with these
+async function submitConsultation() {
     const firstName = document.getElementById('first-name').value;
     const lastName = document.getElementById('last-name').value;
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
+    
+    // Validate required fields
+    if (!firstName || !lastName || !phone || !email) {
+        alert('Please fill in all required fields');
+        return;
+    }
     
     if (!selectedDate || !selectedTime) {
         alert('Please select a date and time');
         return;
     }
     
-    const consultationData = {
-        date: selectedDate.toLocaleDateString(),
-        time: selectedTime.string,
-        firstName,
-        lastName,
-        phone,
-        email,
-        timestamp: new Date().toISOString()
-    };
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address');
+        return;
+    }
     
-    // In a real application, you would send this data to your server
-    // For now, we'll simulate sending an email by showing the data
-    console.log('Consultation booking data:', consultationData);
+    // Validate phone format (basic validation)
+    const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    if (!phoneRegex.test(phone)) {
+        alert('Please enter a valid phone number (e.g., 123-456-7890)');
+        return;
+    }
     
-    // Create email content for the user to copy
-    const emailContent = `
-New Consultation Booking:
-
-Date: ${consultationData.date}
-Time: ${consultationData.time}
-Name: ${firstName} ${lastName}
-Phone: ${phone}
-Email: ${email}
-Booked on: ${new Date().toLocaleString()}
-    `;
-    
-    // Show success message with email content
-    showConsultationSuccess(emailContent);
-    
-    closeModal(document.getElementById('booking-modal'));
-    resetBookingForm();
+    try {
+        await submitConsultationToAirtable(firstName, lastName, phone, email);
+    } catch (error) {
+        console.error('Error submitting consultation:', error);
+        alert('Sorry, there was an error booking your consultation. Please try again or contact Matt directly at MattJEllis1@gmail.com');
+    }
 }
 
-function showConsultationSuccess(emailContent) {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.style.display = 'block';
+async function submitConsultationToAirtable(firstName, lastName, phone, email) {
+    // Show loading state
+    const submitButton = document.querySelector('#consultation-form button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'Booking...';
+    submitButton.disabled = true;
     
-    modal.innerHTML = `
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Consultation Booked Successfully!</h3>
-            <p>Thank you for booking your free consultation. Matt will contact you soon to confirm your appointment.</p>
+    try {
+        // SECURITY WARNING: Move these to environment variables or server-side
+        const AIRTABLE_API_KEY = 'patpEYivrHvjOwZsx.4218ff65d618c439f2e4eaa32751f48ef9c18c659eadcc2e8fd865eba51edd82';
+        const AIRTABLE_BASE_ID = 'appBOTwiMUBKhnaw6';
+        const AIRTABLE_TABLE_NAME = 'Consultations'; // Make sure this matches your table name exactly
+        
+        // Prepare data for Airtable - make sure field names match your Airtable exactly
+        const consultationData = {
+            "First Name": firstName,
+            "Last Name": lastName,
+            "Phone": phone,
+            "Email": email,
+            "Consultation Date": selectedDate.toISOString().split('T')[0], // YYYY-MM-DD format
+            "Consultation Time": selectedTime,
+            "Status": "Pending Confirmation",
+            "Booking Date": new Date().toISOString().split('T')[0]
+        };
+        
+        console.log('Sending data to Airtable:', consultationData); // Debug log
+        
+        // Send to Airtable
+        const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                records: [{
+                    fields: consultationData
+                }]
+            })
+        });
+        
+        console.log('Airtable response status:', response.status); // Debug log
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Airtable API Error:', errorData);
             
-            <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
-                <h4>Booking Details:</h4>
-                <pre style="white-space: pre-wrap; font-family: inherit; margin: 0;">${emailContent}</pre>
-            </div>
-            
-            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                <strong>Note:</strong> Please copy the above information and email it to MattJEllis1@gmail.com 
-                to ensure Matt receives your booking details.
-            </p>
-            
-            <button onclick="this.parentElement.parentElement.remove(); document.body.style.overflow = 'auto';" 
-                    style="margin-top: 1rem; padding: 1rem 2rem; background: var(--huntington-green); 
-                           color: white; border: none; border-radius: 10px; cursor: pointer;">
-                Close
-            </button>
-        </div>
-    `;
+            // More specific error handling
+            if (response.status === 401) {
+                throw new Error('Invalid API key or authentication failed');
+            } else if (response.status === 404) {
+                throw new Error('Base or table not found. Check your Base ID and Table name');
+            } else if (response.status === 422) {
+                throw new Error('Invalid field names or data format. Check your Airtable field names');
+            } else {
+                throw new Error(`Airtable API Error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+            }
+        }
+        
+        const result = await response.json();
+        console.log('Successfully saved to Airtable:', result);
+        
+        // Store booking locally as backup
+        const bookingData = {
+            date: selectedDate.toISOString(),
+            time: selectedTime,
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+            email: email,
+            timestamp: new Date().toISOString(),
+            airtableId: result.records[0].id
+        };
+        
+        // Store in localStorage as backup
+        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        bookings.push(bookingData);
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        
+        // Close modal and reset form
+        closeModal(document.getElementById('info-modal'));
+        document.getElementById('consultation-form').reset();
+        selectedDate = null;
+        selectedTime = null;
+        
+        // Show success notification
+        showNotification('Consultation booked successfully! Matt will contact you to confirm your appointment.');
+        
+    } catch (error) {
+        console.error('Error booking consultation:', error);
+        // Re-throw the error so the calling function can handle it
+        throw error;
+    } finally {
+        // Reset button state
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+    }
+}
+
+// Test function to verify Airtable connection
+async function testAirtableConnection() {
+    const AIRTABLE_API_KEY = 'patpEYivrHvjOwZsx.4218ff65d618c439f2e4eaa32751f48ef9c18c659eadcc2e8fd865eba51edd82';
+    const AIRTABLE_BASE_ID = 'appBOTwiMUBKhnaw6';
     
-    document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden';
-    
-    modal.querySelector('.close').addEventListener('click', function() {
-        modal.remove();
-        document.body.style.overflow = 'auto';
-    });
+    try {
+        // First, let's get the base schema to see what tables exist
+        const response = await fetch(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Available tables:', data.tables.map(t => t.name));
+            return data.tables;
+        } else {
+            console.error('Error fetching base info:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Connection test failed:', error);
+        return null;
+    }
+}
+// Optional email notification function
+async function sendEmailNotification(data) {
+    try {
+        console.log('Email notification would be sent for:', data);
+        // Email implementation would go here
+    } catch (error) {
+        console.error('Failed to send email notification:', error);
+    }
 }
 
 // Back to Top Setup
 function setupBackToTop() {
     const backToTopBtn = document.getElementById('back-to-top');
     
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.style.display = 'block';
+        } else {
+            backToTopBtn.style.display = 'none';
+        }
+    });
+    
+    // Scroll to top when clicked
     backToTopBtn.addEventListener('click', function() {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
-    });
-    
-    // Show/hide back to top button based on scroll position
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backToTopBtn.style.opacity = '1';
-            backToTopBtn.style.visibility = 'visible';
-        } else {
-            backToTopBtn.style.opacity = '0';
-            backToTopBtn.style.visibility = 'hidden';
-        }
     });
 }
 
@@ -466,24 +626,11 @@ function closeModal(modal) {
     document.body.style.overflow = 'auto';
 }
 
-function resetBookingForm() {
-    selectedDate = null;
-    selectedTime = null;
-    
-    document.getElementById('time-slots').style.display = 'none';
-    document.getElementById('booking-form').style.display = 'none';
-    document.getElementById('consultation-form').reset();
-    
-    document.querySelectorAll('.calendar-day.selected').forEach(el => {
-        el.classList.remove('selected');
-    });
-    document.querySelectorAll('.time-slot.selected').forEach(el => {
-        el.classList.remove('selected');
-    });
-}
-
 function showNotification(message) {
+    // Create notification element
     const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
     notification.style.cssText = `
         position: fixed;
         top: 20px;
@@ -492,44 +639,37 @@ function showNotification(message) {
         color: white;
         padding: 1rem 2rem;
         border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         z-index: 3000;
+        font-weight: 600;
         animation: slideInRight 0.3s ease-out;
     `;
-    notification.textContent = message;
+    
+    // Add animation styles
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    `;
+    document.head.appendChild(style);
     
     document.body.appendChild(notification);
     
+    // Remove notification after 5 seconds
     setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease-out';
+        notification.style.animation = 'slideInRight 0.3s ease-out reverse';
         setTimeout(() => {
-            notification.remove();
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
         }, 300);
-    }, 3000);
+    }, 5000);
 }
-
-// Add CSS for notification animations
-const notificationStyles = document.createElement('style');
-notificationStyles.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(notificationStyles);
